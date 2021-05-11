@@ -1,15 +1,23 @@
-import React from "react";
+import React, { useState, createContext } from "react";
 import styled from "styled-components";
 import GameList from "./GameList";
 import AvailableGameSpan from "./AvailableGameSpan";
 import BackgroundImage from "Images/Background.jpg";
 
+export const HomeContext = createContext();
+
 const Home = () => {
+  const [selectedTeam, setSelectedTeam] = useState([]);
+
   return (
     <Background>
       <Header>BASEBALL GAME ONLINE</Header>
       <AvailableGameSpan />
-      <GameList />
+      <GameList selectedTeam={selectedTeam} setSelectedTeam={setSelectedTeam} />
+      <ConfirmForm>
+        <button>확인</button>
+        <button>취소</button>
+      </ConfirmForm>
     </Background>
   );
 };
@@ -30,5 +38,14 @@ const Background = styled.div`
   text-align: center;
   background-repeat: no-repeat;
   background-size: 100% 100%;
+`;
+
+const ConfirmForm = styled.div`
+  position: absolute;
+  top: 0;
+  width: 100px;
+  height: 100px;
+  background: white;
+  z-index: 99;
 `;
 export default Home;

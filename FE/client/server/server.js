@@ -1,41 +1,45 @@
 const express = require("express");
 const app = express();
-const port = 3001;  //포트 번호 3001
+const port = 3001; //포트 번호 3001
 const http = require("http").createServer(app);
 const io = require("socket.io")(http, {
-  cors: { origin: '*' }
+  cors: { origin: "*" },
 });
 
-const baseball = {
-  playerId: 0,
-  playerCount: 0,
-  roomNumber: 0,
-  gameId: 0,
-  playerList: []
-
-}
+let players = {};
+let playerInfo = new Object();
 
 io.on("connection", (socket) => {
-  const connectPlayerId = ++baseball.playerId;
-  socket.on('init', () => {
-    console.log('init');
-    socket.join('room1');
-    socket.emit('playerId', connectPlayerId);
+  socket.on("init", () => {
+    console.log("init");
+    socket.join("room1");
+    playerInfo.playerId = socket.id;
+    players[socket.id] = { playerId: playerInfo.playerId };
+
+    socket.emit("playerId", socket.id);
+
+    console.log(players);
   });
 
-
-
-  socket.on('choiceTeam', ({ playerId, gameId, teamName }) => {
-
-
+  socket.on("chooseGame", ({ playerId, gameId, teamName }) => {
     // io.to('room1').emit('selectedTeam', teamName);
-    console.log(teamName)
+    playerInfo.currentGameId = gameId;
+    players[playerId] = {
+      ...players[playerId],
+      currentGameId: gameId,
+      team: teamName,
+    };
+    io.sockets.in("room1").emit(
+      "setSelectedTeam",
+      Object.values(players).map((player) => player.team)
+    );
+    console.log("고른 팀 이름", teamName);
+    console.log(players);
   });
 
-  socket.on('disconnect', () => {
-    console.log(connectPlayerId)
+  socket.on("disconnect", () => {
     // socket.leave('room1'); //disconnect하면 자동으로 leave가 됨
-    console.log('disconnected');
+    console.log("disconnected");
   });
 });
 

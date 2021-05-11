@@ -1,20 +1,38 @@
-import React from "react";
+import React, { useEffect, useContext, useState } from "react";
 import styled from "styled-components";
 import Game from "./Game";
 import useAsync from "utils/hooks/useAsync";
 import API from "utils/API";
+import { PageContext } from "Components/Page";
 
-const GameList = () => {
+const GameList = ({ selectedTeam, setSelectedTeam }) => {
+  const { socket } = useContext(PageContext);
+
   const [gameState] = useAsync(API.get.games);
   const { data, loading, error } = gameState;
+  const [gameDatas, setGameDatas] = useState();
 
+  useEffect(() => {
+    setGameDatas(data);
+    socket.on("setSelectedTeam", (data) => {
+      console.log(data);
+      setSelectedTeam([...data]);
+    });
+  }, [data, setSelectedTeam]);
+  console.log(selectedTeam);
   return (
     <GameBoxList>
       {loading && <>loading...</>}
 
-      {data && Object.entries(data).map(([_, gameData], idx) => {
-        return <Game key={`Game-${idx}`} {...{ gameData }} />
-      })}
+      {gameDatas &&
+        Object.entries(gameDatas).map(([_, gameData], idx) => {
+          return (
+            <Game
+              key={`Game-${idx}`}
+              {...{ gameData, selectedTeam, setSelectedTeam }}
+            />
+          );
+        })}
 
       {error && <>error...</>}
     </GameBoxList>

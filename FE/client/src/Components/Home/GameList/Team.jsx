@@ -1,25 +1,23 @@
 import { PageContext } from "Components/Page";
 import React, { useContext } from "react";
 import styled from "styled-components";
+import { Link } from "utils/BeemoRouter";
 
-const Team = ({ teamName, gameId }) => {
+const Team = ({ teamName, gameId, setSelectedTeam, selectedTeam }) => {
   const { playerId, socket } = useContext(PageContext);
 
   const handleTeamChoice = () => {
-    socket.emit('choiceTeam', { playerId, gameId, teamName });
+    socket.emit("chooseGame", { playerId, gameId, teamName });
   };
-
-  socket.on('selectedTeam', (teamName) => {
-
-  });
+  console.log("team에서찍은거", selectedTeam, typeof teamName);
 
   return (
-    <TeamLabel>
-      <RadioButton type="radio" name={playerId} onClick={handleTeamChoice} />
-      <TeamName>
-        {teamName}
-      </TeamName>
-    </TeamLabel>
+    <TeamName
+      disabled={selectedTeam.includes(teamName)}
+      onClick={handleTeamChoice}
+    >
+      {teamName}
+    </TeamName>
   );
 };
 
@@ -28,18 +26,24 @@ const TeamLabel = styled.label`
 `;
 
 const RadioButton = styled.input`
- display: none;
-  &:checked+span{
+  display: none;
+  &:checked + span {
     color: orchid;
   }
 `;
 
-const TeamName = styled.span`
+const TeamName = styled.button`
+  background: none;
+  border: none;
   font-weight: bold;
   font-size: 20px;
   &:hover {
     color: red;
     cursor: pointer;
+  }
+  &:disabled {
+    color: gray;
+    cursor: default;
   }
 `;
 
