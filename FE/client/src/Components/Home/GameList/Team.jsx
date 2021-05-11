@@ -3,34 +3,24 @@ import React, { useContext } from "react";
 import styled from "styled-components";
 import { Link } from "utils/BeemoRouter";
 
-const Team = ({ teamName, gameId, setSelectedTeam, selectedTeam }) => {
+const Team = ({ teamName, gameId, selectedTeam }) => {
   const { playerId, socket } = useContext(PageContext);
 
   const handleTeamChoice = () => {
     socket.emit("chooseGame", { playerId, gameId, teamName });
   };
-  console.log("team에서찍은거", selectedTeam, typeof teamName);
 
   return (
-    <TeamName
-      disabled={selectedTeam.includes(teamName)}
-      onClick={handleTeamChoice}
-    >
-      {teamName}
-    </TeamName>
+    <Link to={`/GamePage/${gameId}`}>
+      <TeamName
+        disabled={selectedTeam.includes(teamName)}
+        onClick={handleTeamChoice}
+      >
+        {teamName}
+      </TeamName>
+    </Link>
   );
 };
-
-const TeamLabel = styled.label`
-  width: 50%;
-`;
-
-const RadioButton = styled.input`
-  display: none;
-  &:checked + span {
-    color: orchid;
-  }
-`;
 
 const TeamName = styled.button`
   background: none;

@@ -9,7 +9,7 @@ const socket = io.connect("http://localhost:3001");
 
 const Page = () => {
   const [playerId, setPlayerId] = useState();
-
+  const [selectedTeam, setSelectedTeam] = useState([]);
   const [playerName, setPlayerName] = useState();
 
   useEffect(() => {
@@ -23,14 +23,17 @@ const Page = () => {
   }, []);
 
   useEffect(() => {
-    // const pName = window.prompt("플레이어 이름을 입력하세요!");
-    // setPlayerName(pName);
-    socket.emit("playerName", { playerName });
+    socket.on("setSelectedTeam", (data) => {
+      console.log(data);
+      setSelectedTeam([...data]);
+    });
   }, []);
 
   return (
     <Router>
-      <PageContext.Provider value={{ playerId, socket }}>
+      <PageContext.Provider
+        value={{ playerId, socket, selectedTeam, setSelectedTeam }}
+      >
         <Route path="/" component={Home} />
         <Route path="/GamePage/1" component={GamePage} />
         <Route path="/GamePage/2" component={GamePage} />

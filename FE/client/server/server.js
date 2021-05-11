@@ -10,12 +10,15 @@ let players = {};
 let playerInfo = new Object();
 
 io.on("connection", (socket) => {
+  socket.join("room1");
+  io.sockets.in("room1").emit(
+    "setSelectedTeam",
+    Object.values(players).map((player) => player.team)
+  );
   socket.on("init", () => {
     console.log("init");
-    socket.join("room1");
     playerInfo.playerId = socket.id;
     players[socket.id] = { playerId: playerInfo.playerId };
-
     socket.emit("playerId", socket.id);
 
     console.log(players);
@@ -29,11 +32,7 @@ io.on("connection", (socket) => {
       currentGameId: gameId,
       team: teamName,
     };
-    io.sockets.in("room1").emit(
-      "setSelectedTeam",
-      Object.values(players).map((player) => player.team)
-    );
-    console.log("고른 팀 이름", teamName);
+
     console.log(players);
   });
 

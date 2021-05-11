@@ -5,8 +5,8 @@ import useAsync from "utils/hooks/useAsync";
 import API from "utils/API";
 import { PageContext } from "Components/Page";
 
-const GameList = ({ selectedTeam, setSelectedTeam }) => {
-  const { socket } = useContext(PageContext);
+const GameList = () => {
+  const { socket, selectedTeam, setSelectedTeam } = useContext(PageContext);
 
   const [gameState] = useAsync(API.get.games);
   const { data, loading, error } = gameState;
@@ -14,11 +14,7 @@ const GameList = ({ selectedTeam, setSelectedTeam }) => {
 
   useEffect(() => {
     setGameDatas(data);
-    socket.on("setSelectedTeam", (data) => {
-      console.log(data);
-      setSelectedTeam([...data]);
-    });
-  }, [data, setSelectedTeam]);
+  }, [data]);
   console.log(selectedTeam);
   return (
     <GameBoxList>

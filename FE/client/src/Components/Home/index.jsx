@@ -4,16 +4,12 @@ import GameList from "./GameList";
 import AvailableGameSpan from "./AvailableGameSpan";
 import BackgroundImage from "Images/Background.jpg";
 
-export const HomeContext = createContext();
-
 const Home = () => {
-  const [selectedTeam, setSelectedTeam] = useState([]);
-
   return (
     <Background>
       <Header>BASEBALL GAME ONLINE</Header>
       <AvailableGameSpan />
-      <GameList selectedTeam={selectedTeam} setSelectedTeam={setSelectedTeam} />
+      <GameList />
       <ConfirmForm>
         <button>확인</button>
         <button>취소</button>
