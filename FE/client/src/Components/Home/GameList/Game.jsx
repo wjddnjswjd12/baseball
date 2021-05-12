@@ -15,12 +15,14 @@ const Game = ({
           teamName={awayTeamName}
           gameId={id}
           selectedTeam={selectedTeam}
+          isHomeTeam={false}
           setSelectedTeam={setSelectedTeam}
         />
         <VsSpan>VS</VsSpan>
         <Team
           teamName={homeTeamName}
           gameId={id}
+          isHomeTeam={true}
           selectedTeam={selectedTeam}
           setSelectedTeam={setSelectedTeam}
         />

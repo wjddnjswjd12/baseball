@@ -1,4 +1,4 @@
-import React, { useState, createContext } from "react";
+import React from "react";
 import styled from "styled-components";
 import GameList from "./GameList";
 import AvailableGameSpan from "./AvailableGameSpan";
@@ -10,10 +10,6 @@ const Home = () => {
       <Header>BASEBALL GAME ONLINE</Header>
       <AvailableGameSpan />
       <GameList />
-      <ConfirmForm>
-        <button>확인</button>
-        <button>취소</button>
-      </ConfirmForm>
     </Background>
   );
 };

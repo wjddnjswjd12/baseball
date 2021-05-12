@@ -14,8 +14,11 @@ const GameList = () => {
 
   useEffect(() => {
     setGameDatas(data);
-  }, [data]);
-  console.log(selectedTeam);
+    socket.on("setSelectedTeam", (selectData) => {
+      setSelectedTeam([...selectData]);
+    });
+  }, [data, setSelectedTeam]);
+
   return (
     <GameBoxList>
       {loading && <>loading...</>}
