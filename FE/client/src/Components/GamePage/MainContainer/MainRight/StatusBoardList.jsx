@@ -1,19 +1,25 @@
 import { GamePageContext } from "Components/GamePage";
-import React, { useContext } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import StatusBoard from "./StatusBoard";
 
 const StatusBoardList = () => {
-  const { inGameData, sequenceCount, attackState } =
+  const { inGameData, sequenceCount, attackState, currentSBData } =
     useContext(GamePageContext);
 
   return (
-    <div>
-      <StatusBoard
-        currentPlayer
-        name={`${inGameData && inGameData[attackState][sequenceCount].name}`}
-        id={`${sequenceCount + 1}`}
-      />
-    </div>
+    <>
+      {currentSBData &&
+        currentSBData.map((current, i) => (
+          <StatusBoard
+            currentPlayer
+            name={`${
+              inGameData && inGameData[attackState][sequenceCount].name
+            }`}
+            id={`${i + 1}`}
+            currentData={current}
+          />
+        ))}
+    </>
   );
 };
 

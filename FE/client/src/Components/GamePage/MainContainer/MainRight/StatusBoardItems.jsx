@@ -1,28 +1,34 @@
 import { GamePageContext } from "Components/GamePage";
-import React, { useContext } from "react";
+import React, { useContext, useEffect } from "react";
 import styled from "styled-components";
 
-const StatusBoardItems = (props) => {
-  const { inGameData, currentSBData } = useContext(GamePageContext);
-  console.log(
-    "어레이프롬",
-    currentSBData &&
-      Array.from({
-        length: currentSBData.strike + currentSBData.ball,
-      })
-  );
-  console.log("여기서찍는SB", currentSBData);
+const StatusBoardItems = ({ currentData }) => {
+  const { inGameData, currentSBData, currentPlayAction } =
+    useContext(GamePageContext);
+
+  const handleCurrentPlayAction = (action) => {
+    switch (action) {
+      case "hit":
+        return "안타!";
+      case "strike":
+        return "스트라이크";
+      case "ball":
+        return "볼";
+      default:
+        return;
+    }
+  };
+
   return (
     <>
-      {currentSBData &&
-        Array.from({ length: currentSBData.strike + currentSBData.ball }).map(
-          (_, index) => (
-            <StatusBoardItem>
-              <NumberCircle>{index + 1}</NumberCircle>스트라이크
-              <StrikeBallStatus>{`S${currentSBData.strike} B${currentSBData.ball}`}</StrikeBallStatus>
-            </StatusBoardItem>
-          )
-        )}
+      {currentData &&
+        currentData.map((action, index) => (
+          <StatusBoardItem>
+            <NumberCircle>{index + 1}</NumberCircle>
+            {handleCurrentPlayAction(action)}
+            <StrikeBallStatus>{`S${action} B${action}`}</StrikeBallStatus>
+          </StatusBoardItem>
+        ))}
     </>
   );
 };

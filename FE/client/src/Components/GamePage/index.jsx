@@ -36,11 +36,11 @@ const GamePage = ({ userState }) => {
   const [sequenceCount, setSequenceCount] = useState(0); //몇번째 선수가 뛰고있는지
   const [roundCount, setRoundCount] = useState(1); //몇회인지 카운트
   const [currentBaseData, setCurrentBaseData] = useState([]); //Base에 누구누구 있는지
-  const [currentSBData, setCurrentSBData] = useState({ strike: 0, ball: 0, out: 0 });
-  const [currentPlayAction, setCurrentPlayAction] = useState(''); ////strike, ball, hit;
+  const [currentSBData, setCurrentSBData] = useState();
+  const [currentPlayAction, setCurrentPlayAction] = useState([]); ////strike, ball, hit;
 
   const onPitch = () => {
-    socket.emit('pitch', { gameId: userState.gameId });
+    socket.emit("pitch", { gameId: userState.gameId, sequenceCount });
   };
 
   useEffect(() => {
@@ -77,9 +77,14 @@ const GamePage = ({ userState }) => {
   }, [data]);
 
   useEffect(() => {
-    socket.on("pitchResult", (pitchResult) => {
-      setCurrentSBData(pitchResult);
-    });
+    socket.on(
+      "pitchResult",
+      ({ playAction, sequenceCount, totalPitchStatus }) => {
+        if (playAction === "hit") setSequenceCount(sequenceCount);
+        setCurrentSBData(totalPitchStatus);
+        socket.emit("hit", "");
+      }
+    );
   }, []);
 
   return (

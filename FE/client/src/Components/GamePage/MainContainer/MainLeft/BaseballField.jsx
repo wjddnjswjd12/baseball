@@ -20,14 +20,14 @@ const BaseballField = () => {
   return (
     <BaseballFieldWrapper>
       <canvas ref={canvasRef} />
-      <RunnerImage base='first' />
-      <RunnerImage base='second' />
-      <RunnerImage base='third' />
-      <RunnerImage base='fourth' />
-      <ReadyImage base='first' />
-      <ReadyImage base='second' />
-      <ReadyImage base='third' />
-      <PitchButton />
+      <RunnerImage base="first" />
+      <RunnerImage base="second" />
+      <RunnerImage base="third" />
+      <RunnerImage base="fourth" />
+      <ReadyImage base="first" />
+      <ReadyImage base="second" />
+      <ReadyImage base="third" />
+      {!teamState[attackState].isMyTeam && <PitchButton />}
     </BaseballFieldWrapper>
   );
 };

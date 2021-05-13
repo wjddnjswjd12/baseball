@@ -11,7 +11,9 @@ const baseball = {
   users: [],
 };
 
-const pitchState = [];
+let pitchArr = [];
+let totalPitchStatus = [];
+let currentGameId = [];
 
 io.on("connection", (socket) => {
   const connectPlayerId = socket.id;
@@ -26,7 +28,7 @@ io.on("connection", (socket) => {
     baseball.games = baseball.games.filter(
       ({ playerId }) => playerId !== connectPlayerId
     );
-
+    currentGameId.push(gameId);
     const isMatchGame = baseball.games.some((game) => game.gameId === gameId);
     baseball.games.push({ playerId: connectPlayerId, gameId, teamKind });
 
@@ -35,15 +37,38 @@ io.on("connection", (socket) => {
     if (isMatchGame) startGame({ gameId });
   });
 
-  socket.on('pitch', ({ gameId }) => {
-
+  socket.on("pitch", ({ gameId, sequenceCount }) => {
     const matchCombinedData = getMatchData({ gameId });
+
     const playAction = randomPitch();
 
+    pitchArr.push(playAction);
+
+    if (playAction === "hit") {
+      totalPitchStatus.push(pitchArr);
+      sequenceCount++;
+      pitchArr = [];
+    }
+
+    console.log(totalPitchStatus);
+
     matchCombinedData.forEach((user) => {
-      user.socket.emit('pitchResult', { playAction });
+      user.socket.emit("pitchResult", {
+        playAction,
+        sequenceCount,
+        totalPitchStatus,
+      });
     });
   });
+
+  // socket.on("hit", () => {
+  //   //
+  //   pitchArr = [];
+  //   const matchCombinedData = getMatchData(currentGameId[0]);
+  //   matchCombinedData.forEach((user) => {
+  //     user.socket.emit("changePlayer", { totalPitchStatus });
+  //   });
+  // });
 
   socket.on("disconnect", () => {
     baseball.games = baseball.games.filter(
@@ -87,7 +112,7 @@ const getMatchData = ({ gameId }) => {
     }),
     ...user,
   }));
-}
+};
 
 const randomPitch = () => {
   const arr = ["strike", "ball", "hit"];
