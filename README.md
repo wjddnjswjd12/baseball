@@ -6,7 +6,13 @@
 - [프론트엔드 Beemo](https://github.com/jeonyeonkyu)
 - [프론트엔드 Jenny](https://github.com/wjddnjswjd12)
 
-<br><br>
+## 소소한 멤버 자랑 😎
+
+- <strong>예의<strong/> 💚
+- <strong>감사<strong/> 💛
+- <strong>격려<strong/> 🧡
+
+<br>
 
 ## 팀별 규칙
 
@@ -49,6 +55,10 @@
 
 [👉 baseball API 설계](https://github.com/kimnayeon0108/baseball/wiki/baseball-API-%EC%84%A4%EA%B3%84)
 
-### 시연화면
+<br>
 
-![](https://i.imgur.com/jLw7kvA.gif)
+### 어려웠던 점
+
+- Jenny: 대마왕 👿소켓👿, useEffect작동원리
+- Beemo: 대마왕 👿소켓👿, 마감시간에 불똥, 소켓은 프론트에서 어떻게 배포하지?
+- Yeon: REST API 설계, 리액트 앱 배포가 생각보다 쉽지 않은 듯하다. 제대로 시도해보지 못해서 아쉽다. 다음번엔 꼭..🥺 (OAuth도🥺)
